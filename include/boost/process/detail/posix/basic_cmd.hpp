@@ -29,6 +29,20 @@ namespace posix
 inline std::string build_cmd_shell(const std::string & exe, std::vector<std::string> && data)
 {
     std::string st = exe;
+
+    //put in quotes if it has spaces
+    {
+        boost::replace_all(st, "\"", "\\\"");
+
+        auto it = std::find(st.begin(), st.end(), ' ');
+
+        if (it != st.end())//contains spaces.
+        {
+            st.insert(st.begin(), '"');
+            st += '"';
+        }
+    }
+
     for (auto & arg : data)
     {
         boost::replace_all(arg, "\"", "\\\"");
